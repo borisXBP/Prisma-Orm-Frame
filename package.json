@@ -1,0 +1,13 @@
+{
+  "name": "orm",
+  "version": "1.0.0",
+  "main": "index.js",
+  "type": "module",
+  "license": "MIT",
+  "devDependencies": {
+    "prisma": "^4.2.1"
+  },
+  "dependencies": {
+    "@prisma/client": "4.2.1"
+  }
+}

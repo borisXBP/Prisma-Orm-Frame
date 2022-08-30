@@ -1,0 +1,63 @@
+// This is your Prisma schema file,
+// 本文件为数据库模型的配置文件，所有数据库模型的配置都在此文件，详见：https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+// 数据源
+datasource db {
+  // 数据库
+  provider = "sqlite"
+  // 数据库的连接地址
+  url      = env("DATABASE_URL")
+}
+
+// ---------- 创建 数据模型 ----------
+
+model user {
+  // 用户 ID，不能重复，默认为 UUID
+  id        String   @id @unique @default(uuid())
+  // 用户名 不能重复  @map表示为字段定义别名
+  userName  String   @unique @map("user_name")
+  // 用户密码
+  password  String   @default("")
+  // 手机号
+  phone     Int?     @unique
+  // 昵称
+  nickName  String?  @default("boris") @map("nick_name")
+  // 地址
+  address   String?  @default("")
+  // 性别
+  gender    String?  @default("")
+  // 创建时间
+  createAt  DateTime @default(now()) @map("create_at")
+  // 更新时间
+  updateAt  DateTime @updatedAt @map("update_at")
+  // 个性签名
+  autograph String   @default("")
+
+  // ---- 多表关联操作，生成两个表的关联关系
+  article article[]
+
+  // 给数据库表命名
+  @@map("users")
+}
+
+// 文件模型
+model article {
+  // 建立表的关联关系
+  id String @id @unique @default(uuid())
+
+  title String? @default("")
+
+  desc String? @default("")
+
+  // fields 表示当前模型中的字段 references 表示需要关联的模型中的字段
+  author user @relation(fields: [authorId], references: [id])
+
+  // authorId  作者ID 关联用户的ID
+  authorId String @default("") @map("author_id")
+
+  @@map("articles")
+}
