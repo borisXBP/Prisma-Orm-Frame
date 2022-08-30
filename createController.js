@@ -35,4 +35,28 @@ async function createArticle() {
   }
 }
 
-createArticle();
+// createArticle();
+
+async function createWithInserd() {
+  try {
+    await prisma.user.create({
+      data: {
+        userName: "张三",
+        password: "123456",
+        nickName: "法外狂徒",
+        article: {
+          create: [
+            {
+              title: "我的奋斗",
+              desc: "成名之作",
+            },
+          ],
+        },
+      },
+    });
+  } catch (err) {
+    console.error("嵌套插入数据失败", err);
+  }
+}
+
+createWithInserd();
